@@ -1,7 +1,3 @@
-### `我的提交 
-2019年12月2日22点08分
-这次提交获取表单的内容。刚开始有一点难理解，但是我相信一定会理解的
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
