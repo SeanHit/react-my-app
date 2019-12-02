@@ -1,3 +1,6 @@
+###`修改了readme`
+今天加入表单信息的提取，准备下一步做表单验证。
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
