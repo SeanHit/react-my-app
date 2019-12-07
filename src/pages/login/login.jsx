@@ -7,7 +7,11 @@ import {
 } from 'antd'; //添加ant form组件
 import "./login.less"
 import logo from './images/login-bg.png'
-
+import {reqLogin} from '../../api/index'
+import {message} from "antd";
+import {Redirect} from 'react-router-dom'
+import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 const Item =Form.Item   //不能写在ipmpoot之前
 /*
 * 登录的路由组件
@@ -21,13 +25,54 @@ const Item =Form.Item   //不能写在ipmpoot之前
         event.preventDefault();
 
     //    对所有表单数据进行检验
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err){  //校验成功
-                console.log('提交登录ajax请求',err,values);
+                const {username,password} =values;
+                console.log(username,password)
+                //使用await 和 async
+                //异步返回
+                const result = await reqLogin(username,password);
+                console.log("请求成功",result);
+
+               /*
+               返回成功
+                {
+                    "status": 0,
+                    "data": {
+                    "_id": "5dea34da47adad46381b4aa3",
+                        "username": "admin",
+                        "password": "21232f297a57a5a743894a0e4a801fc3",
+                        "create_time": 1575630042846,
+                        "__v": 0,
+                        "role": {
+                        "menus": []
+                    }
+                    }
+                }
+                失败：
+                    {
+                    "status": 1,
+                    "msg": "用户名或密码不正确!"
+                    }
+                */
+                if(result.status===0){  //登录成功
+                    message.success('登录成功');
+
+                    const user =result.data;
+                //    接收一个user,保存在内存中,存到本地存储
+                //    可能用到utils
+                    memoryUtils.user =user;  //只是保存在内存中
+                    storageUtils.saveUser(user)
+
+                //    跳转到管理界面
+                //    replace（不可回退） push(堆栈可回退,也就是可回退)
+                    this.props.history.push("/admin")
+                }else{  //登录失败
+                    message.error("登录失败"+result.msg);
+                }
             }else{  //校验失败
                 console.log("校验失败",values);
             }
-            console.log('提交登录ajax请求',err,values);
         });
 
 
@@ -48,11 +93,16 @@ const Item =Form.Item   //不能写在ipmpoot之前
         }
     }
      render() {
+
+        const user =memoryUtils.user
+        if(user && user._id){
+            return <Redirect to={'/admin'} />
+        }
+
         //得到具有强大功能form表单  对象
         const form =this.props.form
         //非常重要
         const { getFieldDecorator } =form;
-
         return(
             <div className={"login"}>
                 <header className={"login-header"}>
@@ -152,4 +202,17 @@ const Item =Form.Item   //不能写在ipmpoot之前
 * 新组建会向form组件传递一个新的组件Login
 * */
 const WrapLogin =Form.create()(Login);
- export  default WrapLogin
+export  default WrapLogin
+
+/*
+*  asnyc 和  awit
+*
+* 1.作用？
+*   简化promise,不用使用then()来指定成功/失败的回调函数
+*   以同步编码（就是没有回调函数）方式实现异步流程
+* 2.哪里写await?
+*   在返回promise表达式左侧写await:不想要promise,
+*       想要promise异步执行成功的value数据
+* 3.哪里写async
+*   在await最近函数左侧
+* */

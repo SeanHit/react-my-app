@@ -7,11 +7,9 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import Login from './pages/login/login'
 import Admin from './pages/admin/admin'
 
-
 /* 应用根组件
 *
 */
-
 
 export default class App extends Component {
     render() {   //js语法 生成虚拟dom
@@ -19,12 +17,11 @@ export default class App extends Component {
         return (<BrowserRouter>
             <Switch> {/*只匹配某一个路由,注意大写*/}
                 <Route path={'/login'} component={Login}></Route>
-                <Route path={'/'} component={Admin}></Route>
+                {/*<Route path={'/'} component={Login}></Route>*/}
+                <Route path={'/admin'} component={Admin}></Route>
             </Switch>
         </BrowserRouter>)
     }
-
-
 
 }
 
