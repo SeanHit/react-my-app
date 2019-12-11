@@ -1,3 +1,47 @@
 .header {
   height: 80px;
+  background-color: white;
+
+  .header-top {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #1da57a;
+    text-align: right;
+    padding-right: 30px;
+    span {
+      margin-right: 15px;
+    }
+  }
+  .header-bottem {
+    height: 40px;
+    display: flex;
+    align-items:center;  //  元素居中
+     .header-bottem-left {
+       position: relative;
+       width: 25%;
+       text-align: center;
+       font-size: 20px;
+       &::after {
+         content: '';
+         position: absolute;
+         right: 50%;
+         top:100%;
+         transform: translateX(50%);
+         border-top: 20px solid white;
+         border-right: 20px solid transparent ;
+         border-bottom: 20px solid transparent;
+         border-left: 20px solid transparent;
+       }
+     }
+    .header-bottem-right {
+       width: 75%;
+      text-align: right;
+      margin-right: 30px;
+      img {
+        margin: 0 15px;
+        width: 30px;
+        height: 20px;
+      }
+      }
+  }
 }

@@ -6,7 +6,7 @@ import {
     Button,
 } from 'antd'; //添加ant form组件
 import "./login.less"
-import logo from './images/login-bg.png'
+import logo from '../../assets/images/logo.png'
 import {reqLogin} from '../../api/index'
 import {message} from "antd";
 import {Redirect} from 'react-router-dom'
@@ -98,7 +98,6 @@ const Item =Form.Item   //不能写在ipmpoot之前
         if(user && user._id){
             return <Redirect to={'/admin'} />
         }
-
         //得到具有强大功能form表单  对象
         const form =this.props.form
         //非常重要

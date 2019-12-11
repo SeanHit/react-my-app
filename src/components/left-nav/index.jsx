@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Divider} from "antd";
 import './index.less'
-import logo from '../../assets/images/login-bg.png'
+import logo from '../../assets/images/logo.png'
 import {Link,withRouter} from 'react-router-dom'
 import { Menu, Icon, Button } from 'antd';
 import menuList  from'../../config/menuConfig'
@@ -9,7 +9,6 @@ import menuList  from'../../config/menuConfig'
 * 左侧导航
 * */
 const { SubMenu } = Menu;
-
 
 class LeftNav extends Component{
 
@@ -40,7 +39,6 @@ class LeftNav extends Component{
                     </SubMenu>
                 )
             }
-
         })
     }
 
