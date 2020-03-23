@@ -13,7 +13,6 @@ const BASE = '' //使用了代理 ，不需要了
 //换成下面这个
 //这个是登录ajax
 export const reqLogin =(username,password) =>ajax(BASE+"/login",{username,password},'POST')
-
 // export const reqAddUser =()=>ajax()
 
 //或者
@@ -50,3 +49,10 @@ export const reqWeather =(city) =>{
     })
 }
 
+//商品分类
+//1.获取一级/二级分类列表
+//2.添加分类
+//3.更新分类
+export const  reqCategorys =(parentId) =>ajax(BASE+'/manage/category/list',{parentId},'GET')
+export const reqAddCategorys =(parentId,categoryName) =>ajax(BASE+'/manage/category/add',{parentId,categoryName},'POST')
+export  const reaUpdateCategorys =(categoryId,categoryName) =>ajax(BASE+'/manage/category/update',{categoryId,categoryName},'POST')
