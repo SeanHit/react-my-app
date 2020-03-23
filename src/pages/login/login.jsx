@@ -26,6 +26,7 @@ const Item =Form.Item   //不能写在ipmpoot之前
 
     //    对所有表单数据进行检验
         this.props.form.validateFields(async (err, values) => {
+            console.log(err);
             if (!err){  //校验成功
                 const {username,password} =values;
                 console.log(username,password)
@@ -145,12 +146,12 @@ const Item =Form.Item   //不能写在ipmpoot之前
                                 getFieldDecorator("password",{
                                     rules: [
                                         //注意不要写错
-                                        // {validator:  this.validatePassword  },
+                                        {validator:  this.validatePassword  },
                                     ],
                                 })( //高阶函数  {}用来表示验证的规则
                                     //password是用来标识名称，用来获取输入框的值
                                     <Input
-                                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.5)' }} />}
+                                        prefix={<Icon type="<GithubFilled />" style={{ color: 'rgba(0,0,0,.5)' }} />}
                                         type="password"
                                         placeholder="密码"
                                     />
@@ -174,7 +175,7 @@ const Item =Form.Item   //不能写在ipmpoot之前
 /*
 1.高阶函数
     1） 一类特别的函数
-        a.接收函数类型的参数
+        a.接收函数类型的参数   或者
         b.函数的返回值是函数
     2）.常见
         a.定时器；setTimeOut()/setInterval
@@ -189,7 +190,7 @@ const Item =Form.Item   //不能写在ipmpoot之前
     1）本质是一个函数
     2）接收一个组件，返回一个新的组件（包装组件），
         包装组件会向被包装组件传入特定属性，新组建内部渲染被包装组件
-        For.creat()(传入就组件)
+        Form.creat()(传入就组件)
         返回的对象是一个高阶组件
     3）作用：扩展组件的属性。组件本质是函数
     4）其实也是一个高阶函数：接收组件函数，返回新的组件函数

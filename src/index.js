@@ -7,7 +7,8 @@ import ReactDOM from 'react-dom';   //渲染是必须的
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-// import 'antd/dist/antd.css'              //引入css
+
+// import 'antd/dist/antd.css'              //antd引入css
 
 //读取local中保存user,保存在内存中
 //读取user,放到内存中
