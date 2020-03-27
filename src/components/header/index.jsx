@@ -32,7 +32,18 @@ import LinkButton from "../link-button";
     //获取天气信息
     getWeather =async () =>{
         //注意返回的是promise
-        const {dayPictureUrl,weather} = await reqWeather('北京') ;
+        /*
+        * 因为百度现在已经不支持这个api了，所以我自己模拟一下数据
+        * */
+        // const {dayPictureUrl,weather} = await reqWeather('北京') ;
+        const {dayPictureUrl,weather} ={
+            "date": "周日 06月02日 (实时：30℃)",
+            "dayPictureUrl": "http://api.map.baidu.com/images/weather/day/duoyun.png",
+            "nightPictureUrl": "http://api.map.baidu.com/images/weather/night/leizhenyu.png",
+            "weather": "多云转雷阵雨",
+            "wind": "西南风3-4级",
+            "temperature": "31 ~ 20℃"
+        };
     //    更新状态
         this.setState({dayPictureUrl,weather})
     }

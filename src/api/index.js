@@ -12,7 +12,7 @@ const BASE = '' //使用了代理 ，不需要了
 // }
 //换成下面这个
 //这个是登录ajax
-export const reqLogin =(username,password) =>ajax(BASE+"/login",{username,password},'POST')
+export const reqLogin =(username,password) =>ajax("/login",{username,password},'POST')
 // export const reqAddUser =()=>ajax()
 
 //或者
@@ -32,7 +32,10 @@ export const reqLogin =(username,password) =>ajax(BASE+"/login",{username,passwo
 export const reqWeather =(city) =>{
 
     return new Promise((resolve,reject)=>{
-        const url =`http://api.map.baidu.com/telematics/v3/weather?location=${city}&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
+
+
+        const url =`http://api.map.baidu.com/telematics/v3/weather?location=${city}&output=json&ak=tFBA6jAeRajS9NZzTOgrO2ugf7btGZap`
+        console.log(url);
         //发送jsonp请求
         jsonp(url,{},(err,data)=>{
             console.log('jsonp()',err,data);
@@ -53,6 +56,21 @@ export const reqWeather =(city) =>{
 //1.获取一级/二级分类列表
 //2.添加分类
 //3.更新分类
-export const  reqCategorys =(parentId) =>ajax(BASE+'/manage/category/list',{parentId},'GET')
-export const reqAddCategorys =(parentId,categoryName) =>ajax(BASE+'/manage/category/add',{parentId,categoryName},'POST')
-export  const reaUpdateCategorys =(categoryId,categoryName) =>ajax(BASE+'/manage/category/update',{categoryId,categoryName},'POST')
+export const  reqCategorys =(parentId) =>ajax(BASE+'/manage/category/list',{parentId},'GET');
+export const reqAddCategorys =(parentId,categoryName) =>ajax(BASE+'/manage/category/add',{parentId,categoryName},'POST');
+export  const reaUpdateCategorys =(categoryId,categoryName) =>ajax(BASE+'/manage/category/update',{categoryId,categoryName},'POST');
+
+//获得商品分页列表
+export  const reqProducts =(pageNum,pageSize) =>ajax(BASE+'/manage/product/list',{pageNum,pageSize});
+
+//根据ID/Name搜索产品分页列表
+export const  reqSearchProducts =({pageNum,pageSize,searchContent,searchType}) =>
+                                    ajax(BASE+'/manage/product/search',
+                                        {
+                                            pageNum,
+                                            pageSize,
+                                            [searchType]:searchContent,
+                                        },
+                                        'GET');
+
+export const reqCategory = (categoryId)=>ajax(BASE+'/manage/category/info',{categoryId});

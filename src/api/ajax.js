@@ -12,7 +12,7 @@ import {message} from "antd";
 export default function ajax(url,data={},type='GET') {  //引入模块
 
     return new Promise((resolve,reject) =>{
-        let promise
+        let promise;
     //    1.执行异步请求
         if(type === 'GET'){  //发get
             promise =axios.get(url,{

@@ -25,7 +25,7 @@ const Item =Form.Item   //不能写在ipmpoot之前
         event.preventDefault();
 
     //    对所有表单数据进行检验
-        this.props.form.validateFields(async (err, values) => {
+        this.props.form.validateFields( async (err, values) => {
             console.log(err);
             if (!err){  //校验成功
                 const {username,password} =values;
@@ -33,45 +33,44 @@ const Item =Form.Item   //不能写在ipmpoot之前
                 //使用await 和 async
                 //异步返回
                 const result = await reqLogin(username,password);
-                console.log("请求成功",result);
-
-               /*
-               返回成功
-                {
-                    "status": 0,
-                    "data": {
-                    "_id": "5dea34da47adad46381b4aa3",
-                        "username": "admin",
-                        "password": "21232f297a57a5a743894a0e4a801fc3",
-                        "create_time": 1575630042846,
-                        "__v": 0,
-                        "role": {
-                        "menus": []
-                    }
-                    }
-                }
-                失败：
-                    {
-                    "status": 1,
-                    "msg": "用户名或密码不正确!"
-                    }
-                */
+                console.log(result);
+                /*
+                返回成功
+                 {
+                     "status": 0,
+                     "data": {
+                     "_id": "5dea34da47adad46381b4aa3",
+                         "username": "admin",
+                         "password": "21232f297a57a5a743894a0e4a801fc3",
+                         "create_time": 1575630042846,
+                         "__v": 0,
+                         "role": {
+                         "menus": []
+                     }
+                     }
+                 }
+                 失败：
+                     {
+                     "status": 1,
+                     "msg": "用户名或密码不正确!"
+                     }
+                 */
                 if(result.status===0){  //登录成功
                     message.success('登录成功');
 
                     const user =result.data;
-                //    接收一个user,保存在内存中,存到本地存储
-                //    可能用到utils
+                    //    接收一个user,保存在内存中,存到本地存储
+                    //    可能用到utils
                     memoryUtils.user =user;  //只是保存在内存中
                     storageUtils.saveUser(user)
 
-                //    跳转到管理界面
-                //    replace（不可回退） push(堆栈可回退,也就是可回退)
-                    this.props.history.push("/admin")
+                    //    跳转到管理界面
+                    //    replace（不可回退） push(堆栈可回退,也就是可回退)
+                    this.props.history.push("/home")
                 }else{  //登录失败
                     message.error("登录失败"+result.msg);
                 }
-            }else{  //校验失败
+            } else{  //校验失败
                 console.log("校验失败",values);
             }
         });
@@ -88,10 +87,11 @@ const Item =Form.Item   //不能写在ipmpoot之前
     * 对密码进行自定义验证
     * */
     validatePassword =(rule,value,callback) =>{
-        console.log("validatePassword()",rule,value);
+        // console.log("validatePassword()",rule,value);
         if(!value){
             callback("密码不能为空");
         }
+        callback();
     }
      render() {
 
@@ -151,7 +151,7 @@ const Item =Form.Item   //不能写在ipmpoot之前
                                 })( //高阶函数  {}用来表示验证的规则
                                     //password是用来标识名称，用来获取输入框的值
                                     <Input
-                                        prefix={<Icon type="<GithubFilled />" style={{ color: 'rgba(0,0,0,.5)' }} />}
+                                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.5)' }} />}
                                         type="password"
                                         placeholder="密码"
                                     />

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {
     Input,
     Form,
-    Select,
 } from 'antd'
 
 class UpdateForm extends Component{

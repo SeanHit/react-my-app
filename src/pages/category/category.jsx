@@ -40,14 +40,14 @@ export default class Category extends Component{
                 dataIndex: '',
                 key: '',
                 width:'30%',
-                render: (category) => (
+                render: (categry) => (
                     <div>
-                        <LinkButton onClick={()=>this.showUpdateModal(category)}>修改分类</LinkButton>
+                        <LinkButton onClick={()=>this.showUpdateModal(categry)}>修改分类</LinkButton>
                         {/*如何向事件回调函数传递参数：
                             先定义一个匿名函数，在函数调用处理的函数并传递数据
                          */}
                         {
-                            this.state.parentId ==='0'?<LinkButton onClick={()=>this.showSubCategorys(category)}>查看子分类</LinkButton> :null
+                            this.state.parentId ==='0'?<LinkButton onClick={()=>this.showSubCategorys(categry)}>查看子分类</LinkButton> :null
                         }
 
                     </div>
@@ -57,7 +57,8 @@ export default class Category extends Component{
         ];
 }
 
-    showSubCategorys =(category) =>{
+    showSubCategorys =(category,key) =>{
+        console.log(category);
         this.setState({
             parentId:category._id,
             parentName:category.name,
@@ -86,7 +87,7 @@ export default class Category extends Component{
     /*关闭模态框
     * */
     handleCancel=()=>{
-        this.form .resetFields();
+        this.form.resetFields();
         this.setState({
             showModal:0,
         })
@@ -139,7 +140,7 @@ export default class Category extends Component{
     }
 
     /*
-    点击模态框，添加分类
+    点击模态框，更新分类
     */
     updateCategory = ()=>{
         this.form.validateFields(async (err)=>{
@@ -249,7 +250,7 @@ export default class Category extends Component{
                         loading={loading}
                         bordered={true}
                         pagination={{defaultPageSize:5,showQuickJumper:true}}
-                    />;
+                    />
                 </Card>
                 <Modal
                     title="添加分类"
