@@ -9,6 +9,7 @@ import {
 import LinkButton from '../../components/link-button'
 import pic1 from './images/pic1.png'
 import {reqCategory} from  '../../api/index'
+import {IMAGES_BASE_URL} from '../../utils/constantValues'
 
 const Item =List.Item;
 
@@ -64,7 +65,7 @@ export default class ProductDetails extends Component{
 
         const {name,desc,price,detail,imgs} =this.props.location.state;
         const {cName1,cName2} =this.state;
-        console.log('cname1'+cName1,cName2);
+        console.log('imgs',imgs);
         const title =(
             <span>
                 <LinkButton onClick ={this.props.history.goBack}>
@@ -100,8 +101,11 @@ export default class ProductDetails extends Component{
                         </Item>
                         <Item>
                             <span className={'left'}>商品图片：</span>
-                            <img className={'products-pic'} src={pic1} alt={'电脑图片'}/>
-                            <img className={'products-pic'} src={pic1} alt={'电脑图片2'}/>
+                            {
+                                imgs.map((curr,index)=>(
+                                    <img className={'products-pic'} src={IMAGES_BASE_URL+'/'+curr} alt={'电脑图片'} key={index}/>
+                                ))
+                            }
                         </Item>
                         <Item>
                             <span className={'left'}>商品详情：</span>

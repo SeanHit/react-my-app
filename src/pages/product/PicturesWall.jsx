@@ -6,6 +6,10 @@ import {
     message
 } from 'antd';
 
+import PropTypes  from 'prop-types'
+import {reqDeleteImg} from '../../api/index'
+import {IMAGES_BASE_URL} from '../../utils/constantValues'
+
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -16,13 +20,38 @@ function getBase64(file) {
 }
 
 export default  class PicturesWall extends React.Component {
-    state = {
-        previewVisible: false,  //标识大图
-        previewImage: '',    //大图的url
-        fileList: [          //图片数组对象
 
-        ],
-    };
+    static propTypes ={
+        imgs:PropTypes.array,
+    }
+
+    constructor(props){
+        super(props);
+
+        let fileList =[];
+        const {imgs} =this.props;
+
+        if(imgs && imgs.length >0){
+            fileList =imgs.map((curr,index) =>({
+                uid :-index,
+                name:curr,
+                url : IMAGES_BASE_URL+'/'+curr,
+            }))
+        }
+
+        this.state ={
+            previewVisible: false,  //标识大图
+            previewImage: '',    //大图的url
+            //默认是一空数组
+            fileList   //所有已经上传图片的数组
+        }
+    }
+
+
+    getImages =()=>{
+        const fileList =this.state.fileList;
+        return fileList.map(curr=>curr.name);
+}
 
     handleCancel = () => this.setState({ previewVisible: false });
 
@@ -39,7 +68,7 @@ export default  class PicturesWall extends React.Component {
 
     //fileList：已经上传的地址
     //file:当前操作的图片文件
-    handleChange = ({ file,fileList }) => {
+    handleChange = async({ file,fileList }) => {
 
         console.log('handleChange',file,fileList);
 
@@ -53,21 +82,20 @@ export default  class PicturesWall extends React.Component {
                 file =fileList[fileList.length-1];
                 file.name =name;
                 file.url =url;
-
             }else{    //上传失败
                 message.error('图片上传失败，请稍后重试')
 
             }
+        }else if(file.status ==='removed'){  //删除图片
+            const result = await reqDeleteImg(file.name);
+            if(result.status === 0){
+                message.success('删除图片成功');
+            }else{
+                message.error('删除图片失败');
+            }
         }
 
-
-
-
-
         //不断的更新filelest的状态
-
-
-
 
         this.setState({ fileList });
     }

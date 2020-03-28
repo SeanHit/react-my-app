@@ -7,12 +7,16 @@ import {
     Cascader,   //级联
     Button,
     Icon,
-    Form
+    Form,
+    message
 } from "antd";
-
+import RichTextedit from './components/richTextedit'
 import PicturesWall from './PicturesWall'
 import LinkButton from "../../components/link-button";
-import {reqCategorys}  from  '../../api/index'
+import {reqCategorys,reqAddOrUpdateProduct}  from  '../../api/index'
+
+
+
 
 const Item =Form.Item;
 
@@ -28,7 +32,11 @@ const Item =Form.Item;
          options:[]
      }
 
-
+     constructor(props){
+         super(props);
+         this.myRef = React.createRef();
+         this.editDetails =React.createRef();
+     }
 
      /*
      * 这里是验证价格的输入情况
@@ -43,10 +51,46 @@ const Item =Form.Item;
 
      //提交表单
      submit =()=>{
-         this.props.form.validateFields((error,values)=>{
+         this.props.form.validateFields( async(error,values)=>{
              if(!error){
-                 console.log(values);
-                alert('发送ajax请求')
+
+                 // console.log(values);
+
+                 //1.收集数据
+                 let product;
+                 const {name,desc,price,categorys} =values;
+                 const imgs =this.myRef.current.getImages();
+                 const detail =this.editDetails.current.getDetails();
+                 let pCategoryId ,categoryId;
+                 if(categorys.length==1){
+                      pCategoryId = '0'
+                      categoryId = categorys[0];
+                 }else{
+                      pCategoryId =categorys[0];
+                      categoryId = categorys[1];
+                 }
+                 if(this.product._id){
+                     const _id =this.product._id;
+                     product ={name,desc,price,_id,pCategoryId,categoryId,imgs,detail}
+                 }else{
+                     product ={name,desc,price,pCategoryId,categoryId,imgs,detail}
+                 }
+                 // console.log(product);
+
+                 //2.调用接口请求函数
+                 const result =await reqAddOrUpdateProduct(product);
+
+                 //3.判断接收情况
+                 console.log(result);
+                 if(result.status === 0){
+                     message.success((this.product._id ? '修改': '添加') +'商品成功')
+                 }else{
+                     message.error((this.product._id ? '修改': '添加') +'商品失败')
+                 }
+                 if(!this.product._id){
+                     this.props.history.goBack();
+                 }
+
              }
          })
      }
@@ -260,10 +304,10 @@ const Item =Form.Item;
                         </Item>
 
                         <Item label={'商品图片'}>
-                            <PicturesWall/>
+                            <PicturesWall ref={this.myRef} imgs={product.imgs}/>
                         </Item>
-                        <Item label={'商品详情'}>
-                            <Input type={'number'} placeholder={'请输入商品名称'} addonAfter="元"/>
+                        <Item label={'商品详情'} labelCol={{span:3}} wrapperCol={{span:20}}>
+                            <RichTextedit ref={this.editDetails} detail ={product.detail}/>
                         </Item>
                         <Item >
                             <Button  type={'primary'} onClick={this.submit}>提交</Button>

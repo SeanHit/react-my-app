@@ -60,7 +60,7 @@ import LinkButton from "../link-button";
                 //如果当前的key 和 path 一样，title就是需要的title
                 title =item.title;
             }else if(item.children) { //如果有孩子
-                const cItem =item.children.find(cItem => cItem.key === path);
+                const cItem =item.children.find(cItem =>  path.indexOf(cItem.key) ===0);
                 if (cItem){
                     title =cItem.title;
                 }

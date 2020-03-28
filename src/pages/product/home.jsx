@@ -5,10 +5,11 @@ import {
     Button,
     Icon,
     Table,
-    Input
+    Input,
+    message
 } from 'antd'
 
-import  {reqProducts,reqSearchProducts} from '../../api/index'
+import  {reqProducts,reqSearchProducts,reqChangeProductStatus} from '../../api/index'
 import {  PAGE_SIZE_PRODUCTS  } from '../../utils/constantValues'
 import LinkButton from "../../components/link-button";  //表格每页的数量
 /*
@@ -19,42 +20,17 @@ export default class ProductHome extends Component{
 
     state ={
         // products:[],  //传入的显示表格数据的数组
-        products:[
-            {
-                "status": 1,
-                "imgs": [
-                    "image-1559402396338.jpg"
-                ],
-                "_id": "5ca9e05db49ef916541160cd",
-                "name": "联想ThinkPad 翼4809",
-                "desc": "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
-                "price": 65999,
-                "pCategoryId": "5ca9d6c0b49ef916541160bb",
-                "categoryId": "5ca9db9fb49ef916541160cc",
-                "detail": "<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">想你所需，超你所想！精致外观，轻薄便携带光驱，内置正版office杜绝盗版死机，全国联保两年！</span> 222</p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">联想（Lenovo）扬天V110 15.6英寸家用轻薄便携商务办公手提笔记本电脑 定制【E2-9010/4G/128G固态】 2G独显 内置</span></p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">99999</span></p>\n",
-                "__v": 0
-            },
-            {
-                "status": 1,
-                "imgs": [
-                    "image-1559402448049.jpg",
-                    "image-1559402450480.jpg"
-                ],
-                "_id": "5ca9e414b49ef916541160ce",
-                "name": "华硕(ASUS) 飞行堡垒",
-                "desc": "15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)",
-                "price": 6799,
-                "pCategoryId": "5ca9d6c0b49ef916541160bb",
-                "categoryId": "5ca9db8ab49ef916541160cb",
-                "detail": "<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">华硕(ASUS) 飞行堡垒6 15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)火陨红黑</span>&nbsp;</p>\n<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">【4.6-4.7号华硕集体放价，大牌够品质！】1T+256G高速存储组合！超窄边框视野无阻，强劲散热一键启动！</span>&nbsp;</p>\n",
-                "__v": 0
-            }
-        ],
+        products:[],
         total: 0,   //总数
         loading:false,  //loading效果
         searchType:'productName',
         searchContent:'',
     }
+
+
+
+
+
     /*
     * 初始化表格列的函数，需要在componentWillMount中调用一次就好了
     * */
@@ -79,11 +55,14 @@ export default class ProductHome extends Component{
                 width: 100,
                 title: '状态',
                 dataIndex: 'status',
-                render:()=>{
+                render:(status,product)=>{
+
+                    let statusTarget =(status ==1)?2:1;
+                    console.log(status,statusTarget,product._id);
                     return (
                         <span>
-                            <Button type={'primary'}>下架</Button>
-                            <span>下架</span>
+                            <Button type={'primary'} onClick={()=>this.changeStatus(product._id,statusTarget)}>{status ==1?'下架':'上架'}</Button>
+                            <span>{status ==1 ? '在售':'已下架'}</span>
                         </span>
                     )
                 }
@@ -135,37 +114,7 @@ export default class ProductHome extends Component{
             this.setState({
                 total,
                 // products: list,
-                products:[
-                    {
-                        "status": 1,
-                        "imgs": [
-                            "image-1559402396338.jpg"
-                        ],
-                        "_id": "5ca9e05db49ef916541160cd",
-                        "name": "联想ThinkPad 翼4809",
-                        "desc": "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
-                        "price": 65999,
-                        "pCategoryId": "5df1d98ab8ca3049d05c23f7",
-                        "categoryId": "5df276cb3c88c85ca01afeac",
-                        "detail": "<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">想你所需，超你所想！精致外观，轻薄便携带光驱，内置正版office杜绝盗版死机，全国联保两年！</span> 222</p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">联想（Lenovo）扬天V110 15.6英寸家用轻薄便携商务办公手提笔记本电脑 定制【E2-9010/4G/128G固态】 2G独显 内置</span></p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">99999</span></p>\n",
-                        "__v": 0
-                    },
-                    {
-                        "status": 1,
-                        "imgs": [
-                            "image-1559402448049.jpg",
-                            "image-1559402450480.jpg"
-                        ],
-                        "_id": "5ca9e414b49ef916541160ce",
-                        "name": "华硕(ASUS) 飞行堡垒",
-                        "desc": "15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)",
-                        "price": 6799,
-                        "pCategoryId": "5ca9d6c0b49ef916541160bb",
-                        "categoryId": "5ca9db8ab49ef916541160cb",
-                        "detail": "<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">华硕(ASUS) 飞行堡垒6 15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)火陨红黑</span>&nbsp;</p>\n<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">【4.6-4.7号华硕集体放价，大牌够品质！】1T+256G高速存储组合！超窄边框视野无阻，强劲散热一键启动！</span>&nbsp;</p>\n",
-                        "__v": 0
-                    }
-                ],
+                products:list,
                 loading:false,
             })
         }else{
@@ -174,6 +123,14 @@ export default class ProductHome extends Component{
     }
 
 
+    changeStatus =async (productId, status)=>{
+        const result = await reqChangeProductStatus(productId, status);
+        if(result.status ==0){
+            message.success('状态更改成功');
+            this.getProducts(this.pageNum || 1);
+        }
+
+    }
 
     componentWillMount() {
         this.initColumns();
@@ -224,6 +181,7 @@ export default class ProductHome extends Component{
                                 defaultPageSize : PAGE_SIZE_PRODUCTS,
                                 total:total,
                                 onChange: (pageNum)=>{
+                                    this.pageNum =pageNum;
                                     this.getProducts(pageNum);
                                 }
                             }

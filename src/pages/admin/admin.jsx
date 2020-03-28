@@ -33,7 +33,7 @@ export default class  Admin extends Component{
             return <Redirect to={'/login'}/>
         }else{
             return(
-                <Layout style={{height:"100%"}}>
+                <Layout style={{minHeight:"100%"}}>
                     {/*左侧导航*/}
                     <Sider>
                             <LeftNav/>
