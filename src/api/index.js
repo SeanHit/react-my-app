@@ -5,14 +5,15 @@
 import ajax from './ajax'
 import jsonp from 'jsonp'
 
-// const BASE ='http://localhost:5000'
-const BASE = '' //使用了代理 ，不需要了
+// const BASE ='http://120.26.176.6:5000'
+// const BASE = '/api' //使用了代理 ，不需要了
+const BASE = ''
 // export function reqLogin(username,password) {
 //      return  ajax("./login",{username,password},'POST')
 // }
 //换成下面这个
 //这个是登录ajax
-export const reqLogin =(username,password) =>ajax("/login",{username,password},'POST')
+export const reqLogin =(username,password) =>ajax(BASE+"/login",{username,password},'POST')
 // export const reqAddUser =()=>ajax()
 
 //或者
@@ -89,3 +90,12 @@ export const reqAddRole = (roleName) => ajax('/manage/role/add', {roleName}, 'PO
 export const reqRoles = () => ajax('/manage/role/list')
 // 更新角色(给角色设置权限)
 export const reqUpdateRole = (role) => ajax('/manage/role/update', role, 'POST')
+
+// 添加/更新用户
+export const reqAddOrUpdateUser = (user) => ajax('/manage/user/'+(user._id ? 'update' : 'add'), user, 'POST')
+
+// 获取用户列表
+export const reqUsers = () => ajax('/manage/user/list')
+
+// 删除用户
+export const reqDeleteUser = (userId) => ajax('/manage/user/delete', {userId}, 'POST')

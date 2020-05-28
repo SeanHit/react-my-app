@@ -6,7 +6,7 @@ import {
     Button,
 } from 'antd'; //添加ant form组件
 import "./login.less"
-import logo from '../../assets/images/logo.png'
+import logo from './images/login-bg.png'
 import {reqLogin} from '../../api/index'
 import {message} from "antd";
 import {Redirect} from 'react-router-dom'
@@ -33,7 +33,6 @@ const Item =Form.Item   //不能写在ipmpoot之前
                 //使用await 和 async
                 //异步返回
                 const result = await reqLogin(username,password);
-                console.log(result);
                 /*
                 返回成功
                  {
